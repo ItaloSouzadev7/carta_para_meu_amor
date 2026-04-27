@@ -544,23 +544,85 @@
     }
 
     @media (max-width: 840px) {
-      body { overflow: auto; }
+      html, body { overflow: auto; }
+      body::before,
+      body::after {
+        opacity: 0.12;
+      }
+      .app {
+        padding: 0;
+        align-items: stretch;
+      }
       .frame {
-        height: auto;
-        min-height: 92vh;
+        width: 100%;
+        height: 100dvh;
+        min-height: 100dvh;
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+      }
+      .slide {
+        grid-template-rows: auto minmax(0, 1fr) auto;
+      }
+      .topbar {
+        padding: 14px 16px 0;
+        font-size: 11px;
+        letter-spacing: .11em;
+        flex-wrap: wrap;
+        justify-content: center;
       }
       .content {
         grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 14px 16px 18px;
       }
       .visual {
-        min-height: 38vh;
+        min-height: 28vh;
+      }
+      .text {
+        max-width: none;
+        padding: 0;
+      }
+      h1 {
+        font-size: clamp(2.5rem, 12vw, 4rem);
+      }
+      h2 {
+        font-size: clamp(1.55rem, 8vw, 2.35rem);
+      }
+      p {
+        font-size: 1rem;
+        line-height: 1.55;
+      }
+      .hero-title {
+        font-size: clamp(2.4rem, 11vw, 4.6rem);
+        margin-bottom: 10px;
+      }
+      .intro-card {
+        width: 100%;
+        max-width: none;
+        padding: 20px 16px;
+      }
+      .image-wrap {
+        width: min(100%, 320px);
+        padding: 12px 12px 38px;
+      }
+      .image-wrap.wide {
+        width: min(100%, 360px);
+        aspect-ratio: 16 / 10;
       }
       .controls {
         flex-direction: column;
         align-items: stretch;
+        padding: 0 16px 16px;
+        gap: 10px;
       }
       .btn {
         width: 100%;
+        font-size: 14px;
+        padding: 12px 16px;
+      }
+      .progress {
+        text-align: center;
       }
     }
   </style>
@@ -602,7 +664,7 @@
         </div>
         <div class="controls">
           <span class="progress">02 / 06</span>
-          <button class="btn" data-next>Próxima lembrança</button>
+          <button class="btn" data-next>Próxima foto</button>
         </div>
       </article>
 
@@ -625,7 +687,7 @@
         </div>
         <div class="controls">
           <span class="progress">03 / 06</span>
-          <button class="btn" data-next>Ver a próxima</button>
+          <button class="btn" data-next>Ver outra foto</button>
         </div>
       </article>
 
@@ -671,7 +733,7 @@
         </div>
         <div class="controls">
           <span class="progress">05 / 06</span>
-          <button class="btn" data-next>Ver lembrança</button>
+          <button class="btn" data-next>Ver o olhar</button>
         </div>
       </article>
 
@@ -679,6 +741,7 @@
         <div class="center-intro">
           <div class="intro-card">
             <div class="small">A SAUDADE</div>
+            <button class="btn" data-next style="margin: 8px auto 14px; width: min(100%, 320px); display:block;">Ver surpresa</button>
             <h2 data-typewriter>A foto ficou borrada, mas a saudade ficou nítida.</h2>
             <p>Tem imagem que não precisa estar perfeita para dizer tudo o que o coração ainda sente.</p>
             <div class="visual" style="min-height:auto;">
@@ -688,13 +751,9 @@
             </div>
           </div>
         </div>
-        <div class="controls">
-          <span class="progress">06 / 06</span>
-          <button class="btn" data-next>Ver surpresa</button>
-        </div>
       </article>
 
-        <article class="slide" data-slide="6">
+      <article class="slide" data-slide="6">
         <div class="center-intro">
           <div class="intro-card surprise">
             <div class="small">EU AMO VOCE</div>

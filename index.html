@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para você</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23ff7aa2' d='M32 56s-4.7-3-9.7-7.3C13.8 40.7 6 33.2 6 22.9 6 15 12 9 19.9 9c4.5 0 8.6 2.2 11.1 5.7C33.5 11.2 37.6 9 42.1 9 50 9 56 15 56 22.9c0 10.3-7.8 17.8-16.3 25.8C36.7 53 32 56 32 56z'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg1: #120f1a;
+      --bg2: #241327;
+      --card: rgba(255, 255, 255, 0.08);
+      --text: #fff7fb;
+      --muted: rgba(255, 247, 251, 0.78);
+      --accent: #ff7aa2;
+      --accent2: #ffd166;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at top, rgba(255, 122, 162, 0.18), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(255, 209, 102, 0.14), transparent 35%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+      font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+      opacity: 0.25;
+    }
+
+    .app {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .frame {
+      width: min(980px, 100%);
+      height: min(92vh, 920px);
+      border-radius: 28px;
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      grid-template-rows: auto 1fr auto;
+      display: none;
+      opacity: 0;
+      transform: scale(1.02);
+      pointer-events: none;
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    .slide.active {
+      display: grid;
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 24px 0;
+      gap: 12px;
+      font-family: system-ui, sans-serif;
+      font-size: 13px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .chip {
+      border: 1px solid rgba(255,255,255,0.16);
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 18px;
+      align-items: center;
+      padding: 20px 24px 24px;
+    }
+
+    .text {
+      max-width: 520px;
+      padding: 18px 4px;
+    }
+
+    h1, h2 {
+      margin: 0 0 14px;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 6vw, 5.5rem);
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      font-weight: 700;
+    }
+
+    p {
+      margin: 0 0 18px;
+      font-size: clamp(1.03rem, 1.8vw, 1.25rem);
+      line-height: 1.7;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+    }
+
+    .quote {
+      display: inline-block;
+      font-family: "Palatino Linotype", Georgia, serif;
+      color: #fff;
+      font-size: clamp(1.15rem, 2vw, 1.55rem);
+      line-height: 1.55;
+      padding: 14px 18px;
+      border-left: 3px solid var(--accent);
+      background: rgba(0,0,0,0.18);
+      border-radius: 0 18px 18px 0;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+    }
+
+    .visual {
+      display: grid;
+      place-items: center;
+      position: relative;
+      min-height: 56vh;
+    }
+
+    .image-wrap {
+      width: min(100%, 420px);
+      aspect-ratio: 4 / 5;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 22px 60px rgba(0,0,0,.5);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      transform: rotate(-1deg);
+    }
+
+    .image-wrap.wide {
+      width: min(100%, 560px);
+      aspect-ratio: 16 / 9;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 0 24px 24px;
+      font-family: system-ui, sans-serif;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      color: #20111b;
+      background: linear-gradient(135deg, var(--accent), #ffb3c7);
+      padding: 14px 20px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 12px 28px rgba(255,122,162,.28);
+      transition: transform .18s ease, filter .18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.03); }
+    .btn:active { transform: translateY(1px); }
+
+    .btn.secondary {
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.16);
+      box-shadow: none;
+    }
+
+    .progress {
+      font-family: system-ui, sans-serif;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .center-intro {
+      text-align: center;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      height: 100%;
+    }
+
+    .intro-card {
+      max-width: 760px;
+      padding: 34px;
+      border-radius: 30px;
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+    }
+
+    .small {
+      font-size: 0.95rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      font-family: system-ui, sans-serif;
+      margin-bottom: 14px;
+    }
+
+    .surprise {
+      display: grid;
+      gap: 16px;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .heart {
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle at 35% 35%, #ffd2dd, #ff7aa2 65%, #e84577);
+      transform: rotate(45deg);
+      border-radius: 22px;
+      position: relative;
+      box-shadow: 0 0 0 18px rgba(255,122,162,0.06), 0 20px 45px rgba(232,69,119,0.3);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: inherit;
+    }
+
+    .heart::before { left: -60px; top: 0; }
+    .heart::after { top: -60px; left: 0; }
+
+    @keyframes pulse {
+      0%, 100% { transform: rotate(45deg) scale(1); }
+      50% { transform: rotate(45deg) scale(1.08); }
+    }
+
+    .hidden {
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity .5s ease, transform .5s ease;
+    }
+
+    .hidden.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    @media (max-width: 840px) {
+      body { overflow: auto; }
+      .frame {
+        height: auto;
+        min-height: 92vh;
+      }
+      .content {
+        grid-template-columns: 1fr;
+      }
+      .visual {
+        min-height: 38vh;
+      }
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="frame">
+      <article class="slide active" data-slide="0">
+        <div class="center-intro">
+          <div class="intro-card">
+            <div class="small">Clique para começar</div>
+            <h1>Eu nunca esqueci você.</h1>
+            <p>Essa página foi feita para te lembrar, com carinho, que existem sentimentos que o tempo não apaga.</p>
+            <div class="quote">Meu coração é seu e sempre vai ser teu.</div>
+          </div>
+        </div>
+        <div class="controls">
+          <span class="progress">01 / 05</span>
+          <button class="btn" data-next>Começar a ver</button>
+        </div>
+      </article>
+
+      <article class="slide" data-slide="1">
+        <div class="topbar">
+          <span class="chip">Imagem 1</span>
+          <span class="chip">Clique para seguir</span>
+        </div>
+        <div class="content">
+          <div class="text">
+            <h2>Você é incrível, forte e guerreira.</h2>
+            <p>Eu admiro demais a mulher que você é. Sua força, sua coragem e a forma como você enfrenta a vida sempre me encantaram.</p>
+            <div class="quote">Seu sorriso sempre foi uma das coisas mais lindas que eu já vi.</div>
+          </div>
+          <div class="visual">
+            <div class="image-wrap">
+              <img src="ELA1.jpeg" alt="Foto ELA 1" />
+            </div>
+          </div>
+        </div>
+        <div class="controls">
+          <span class="progress">02 / 05</span>
+          <button class="btn" data-next>Próxima lembrança</button>
+        </div>
+      </article>
+
+      <article class="slide" data-slide="2">
+        <div class="topbar">
+          <span class="chip">Imagem 2</span>
+          <span class="chip">Mais um clique</span>
+        </div>
+        <div class="content">
+          <div class="text">
+            <h2>Você inspira admiração em cada detalhe.</h2>
+            <p>Não é só pela beleza, é pelo jeito de ser. Você tem uma presença que acalma, uma luz que chama atenção e uma força que impressiona.</p>
+            <div class="quote">Eu amo demais você, e isso nunca deixou de existir dentro de mim.</div>
+          </div>
+          <div class="visual">
+            <div class="image-wrap">
+              <img src="ELA2.jpeg" alt="Foto ELA 2" />
+            </div>
+          </div>
+        </div>
+        <div class="controls">
+          <span class="progress">03 / 05</span>
+          <button class="btn" data-next>Ver a próxima</button>
+        </div>
+      </article>
+
+      <article class="slide" data-slide="3">
+        <div class="topbar">
+          <span class="chip">Imagem 3</span>
+          <span class="chip">Quase lá</span>
+        </div>
+        <div class="content">
+          <div class="text">
+            <h2>Eu nunca deixei de admirar o seu brilho.</h2>
+            <p>Tem coisas em você que são raras. Seu sorriso me encanta, seu jeito me ganha e sua existência ainda faz diferença enorme em mim.</p>
+            <div class="quote">Meu coração é seu e sempre vai ser teu.</div>
+          </div>
+          <div class="visual">
+            <div class="image-wrap">
+              <img src="ELA3.jpeg" alt="Foto ELA 3" />
+            </div>
+          </div>
+        </div>
+        <div class="controls">
+          <span class="progress">04 / 05</span>
+          <button class="btn" data-next>Continuar</button>
+        </div>
+      </article>
+
+      <article class="slide" data-slide="4">
+        <div class="topbar">
+          <span class="chip">O olhar</span>
+          <span class="chip">Bem perto</span>
+        </div>
+        <div class="content">
+          <div class="text">
+            <h2>O seu olhar nunca foi só bonito.</h2>
+            <p>Ele tem aquela força rara de ficar na memória, de acalmar e, ao mesmo tempo, de mexer com tudo por dentro.</p>
+            <div class="quote">No seu olhar existe uma verdade que eu reconheceria em qualquer lugar.</div>
+          </div>
+          <div class="visual">
+            <div class="image-wrap wide">
+              <img src="olhar.jpg" alt="Close dos olhos" />
+            </div>
+          </div>
+        </div>
+        <div class="controls">
+          <span class="progress">05 / 05</span>
+          <button class="btn" data-next>Ver surpresa</button>
+        </div>
+      </article>
+
+        <article class="slide" data-slide="5">
+          <div class="center-intro">
+            <div class="intro-card surprise">
+              <div class="small">EU AMO VOCE</div>
+              <div class="image-wrap" style="width:min(100%,420px); aspect-ratio: 4 / 5; margin: 4px auto 0;">
+                <img src="final.jpg" alt="Foto final do casal" />
+              </div>
+            </div>
+          </div>
+        </article>
+    </section>
+  </main>
+
+  <audio id="loveSong" preload="auto" loop>
+    <source src="amor-puro.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const nextButtons = document.querySelectorAll("[data-next]");
+      const loveSong = document.getElementById("loveSong");
+      const songStartSeconds = 96.68; // "Haverá um céu azul, um amor puro"
+      let current = 0;
+
+      function showSlide(index) {
+        current = Math.max(0, Math.min(index, slides.length - 1));
+        slides.forEach((slide, i) => slide.classList.toggle("active", i === current));
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        if (current === 5) {
+          loveSong.currentTime = songStartSeconds;
+          loveSong.play().catch(() => {});
+        } else {
+          loveSong.pause();
+        }
+      }
+
+      nextButtons.forEach(btn => {
+        btn.addEventListener("click", () => showSlide(current + 1));
+      });
+    </script>
+  </body>
+  </html>

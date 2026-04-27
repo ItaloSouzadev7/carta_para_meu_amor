@@ -778,14 +778,24 @@
         animation: finalFloat 6.5s ease-in-out infinite;
       }
       .slide[data-slide="6"] .intro-card::before,
-      .slide[data-slide="6"] .final-sparks,
-      .slide[data-slide="6"] .final-hearts {
+      .slide[data-slide="6"] .final-sparks {
         display: none;
       }
-      .slide[data-slide="6"] .image-wrap,
-      .slide[data-slide="6"] .image-wrap img,
-      .slide[data-slide="6"] .final-title {
+      .slide[data-slide="6"] .final-hearts span:nth-child(n+7) {
+        display: none;
+      }
+      .slide[data-slide="6"] .final-hearts span {
+        animation-duration: 7.5s;
+        opacity: 0.85;
+      }
+      .slide[data-slide="6"] .image-wrap {
         animation-duration: 0s;
+      }
+      .slide[data-slide="6"] .image-wrap img {
+        animation-duration: 0s;
+      }
+      .slide[data-slide="6"] .final-title {
+        animation-duration: 1.8s;
       }
     }
   </style>
@@ -926,7 +936,7 @@
               <span></span><span></span><span></span><span></span><span></span><span></span>
               <span></span><span></span><span></span><span></span><span></span><span></span>
             </div>
-            <div class="small final-title">EU AMO VOCE</div>
+            <div class="small final-title">EU AMO VOCE! 😍❤️</div>
             <div class="image-wrap" style="width:min(100%,420px); aspect-ratio: 4 / 5; margin: 4px auto 0;">
               <img src="final.jpg" alt="Foto final do casal" />
             </div>

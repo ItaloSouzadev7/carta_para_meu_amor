@@ -24,7 +24,7 @@
       background:
         radial-gradient(circle at top, rgba(255, 122, 162, 0.18), transparent 30%),
         radial-gradient(circle at bottom right, rgba(255, 209, 102, 0.14), transparent 35%),
-        linear-gradient(135deg, var(--bg1), var(--bg2));
+        linear-gradient(135deg, #120f1a, #241327);
       color: var(--text);
       font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
       overflow: hidden;
@@ -34,10 +34,26 @@
       content: "";
       position: fixed;
       inset: 0;
-      background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
-      background-size: 24px 24px;
+      background-image:
+        radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        radial-gradient(rgba(255, 255, 255, 0.03) 2px, transparent 2px);
+      background-size: 24px 24px, 72px 72px;
       pointer-events: none;
-      opacity: 0.25;
+      opacity: 0.18;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255, 190, 210, 0.12), transparent 7%),
+        radial-gradient(circle at 80% 18%, rgba(255, 209, 102, 0.10), transparent 8%),
+        radial-gradient(circle at 18% 82%, rgba(255, 122, 162, 0.10), transparent 7%),
+        radial-gradient(circle at 84% 76%, rgba(255, 255, 255, 0.06), transparent 10%);
+      filter: blur(10px);
+      opacity: 0.8;
     }
 
     .app {
@@ -53,12 +69,61 @@
       width: min(980px, 100%);
       height: min(92vh, 920px);
       border-radius: 28px;
-      background: var(--card);
+      background:
+        linear-gradient(180deg, rgba(255, 247, 238, 0.08), rgba(255, 255, 255, 0.02)),
+        rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(16px);
       box-shadow: var(--shadow);
       overflow: hidden;
       position: relative;
       border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.08), transparent 26%),
+        radial-gradient(circle at 80% 20%, rgba(255, 186, 205, 0.10), transparent 18%),
+        radial-gradient(circle at 50% 80%, rgba(255, 209, 102, 0.06), transparent 22%),
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0 2px, transparent 2px 7px);
+      opacity: 0.75;
+      pointer-events: none;
+    }
+
+    .atmosphere {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .atmosphere span {
+      position: absolute;
+      display: block;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px 999px 999px 0;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(255,122,162,0.65) 55%, rgba(255,122,162,0.1));
+      opacity: 0.55;
+      filter: blur(0.1px);
+      transform: rotate(45deg);
+      animation: floatPetal 14s linear infinite;
+    }
+
+    .atmosphere span:nth-child(1) { top: 10%; left: 8%; animation-duration: 16s; }
+    .atmosphere span:nth-child(2) { top: 68%; left: 12%; width: 10px; height: 10px; animation-duration: 18s; animation-delay: -4s; }
+    .atmosphere span:nth-child(3) { top: 18%; left: 82%; width: 12px; height: 12px; animation-duration: 15s; animation-delay: -7s; }
+    .atmosphere span:nth-child(4) { top: 74%; left: 80%; width: 16px; height: 16px; animation-duration: 19s; animation-delay: -10s; }
+    .atmosphere span:nth-child(5) { top: 44%; left: 56%; width: 11px; height: 11px; animation-duration: 17s; animation-delay: -6s; }
+    .atmosphere span:nth-child(6) { top: 28%; left: 34%; width: 9px; height: 9px; animation-duration: 20s; animation-delay: -8s; }
+
+    @keyframes floatPetal {
+      0% { transform: translate3d(0, 0, 0) rotate(45deg) scale(1); }
+      50% { transform: translate3d(12px, -28px, 0) rotate(65deg) scale(1.08); }
+      100% { transform: translate3d(0, 0, 0) rotate(45deg) scale(1); }
     }
 
     .slide {
@@ -77,6 +142,7 @@
       opacity: 1;
       transform: scale(1);
       pointer-events: auto;
+      z-index: 2;
     }
 
     .topbar {
@@ -159,17 +225,34 @@
     .image-wrap {
       width: min(100%, 420px);
       aspect-ratio: 4 / 5;
-      border-radius: 28px;
+      border-radius: 18px;
       overflow: hidden;
       box-shadow: 0 22px 60px rgba(0,0,0,.5);
       border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.06);
+      background: linear-gradient(180deg, #fffdf8, #f4eadf);
       transform: rotate(-1deg);
+      box-sizing: border-box;
+      padding: 16px 16px 46px;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .image-wrap::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 14px;
+      width: 44px;
+      height: 10px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: rgba(35, 21, 28, 0.16);
     }
 
     .image-wrap.wide {
       width: min(100%, 560px);
       aspect-ratio: 16 / 9;
+      padding-bottom: 22px;
     }
 
     img {
@@ -177,6 +260,22 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      border-radius: 10px;
+    }
+
+    .typewriter-caret::after {
+      content: "";
+      display: inline-block;
+      width: 0.08em;
+      height: 1em;
+      margin-left: 0.08em;
+      background: currentColor;
+      vertical-align: -0.14em;
+      animation: blink 0.9s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
     }
 
     .controls {
@@ -318,18 +417,21 @@
 <body>
   <main class="app">
     <section class="frame">
+      <div class="atmosphere" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
       <article class="slide active" data-slide="0">
         <div class="center-intro">
           <div class="intro-card">
-            <div class="small">Clique para começar</div>
-            <h1>Eu nunca esqueci você.</h1>
-            <p>Essa página foi feita para te lembrar, com carinho, que existem sentimentos que o tempo não apaga.</p>
-            <div class="quote">Meu coração é seu e sempre vai ser teu.</div>
+            <div class="small">Clique para comeÃ§ar</div>
+            <h1 data-typewriter>Eu nunca esqueci vocÃª.</h1>
+            <p data-typewriter>Essa pÃ¡gina foi feita para te lembrar, com carinho, que existem sentimentos que o tempo nÃ£o apaga.</p>
+            <div class="quote">Meu coraÃ§Ã£o Ã© seu e sempre vai ser teu.</div>
           </div>
         </div>
         <div class="controls">
-          <span class="progress">01 / 05</span>
-          <button class="btn" data-next>Começar a ver</button>
+          <span class="progress">01 / 06</span>
+          <button class="btn" data-next>ComeÃ§ar a ver</button>
         </div>
       </article>
 
@@ -351,7 +453,7 @@
           </div>
         </div>
         <div class="controls">
-          <span class="progress">02 / 05</span>
+          <span class="progress">02 / 06</span>
           <button class="btn" data-next>Próxima lembrança</button>
         </div>
       </article>
@@ -374,7 +476,7 @@
           </div>
         </div>
         <div class="controls">
-          <span class="progress">03 / 05</span>
+          <span class="progress">03 / 06</span>
           <button class="btn" data-next>Ver a próxima</button>
         </div>
       </article>
@@ -397,7 +499,7 @@
           </div>
         </div>
         <div class="controls">
-          <span class="progress">04 / 05</span>
+          <span class="progress">04 / 06</span>
           <button class="btn" data-next>Continuar</button>
         </div>
       </article>
@@ -420,21 +522,41 @@
           </div>
         </div>
         <div class="controls">
-          <span class="progress">05 / 05</span>
+          <span class="progress">05 / 06</span>
+          <button class="btn" data-next>Ver lembrança</button>
+        </div>
+      </article>
+
+      <article class="slide" data-slide="5">
+        <div class="center-intro">
+          <div class="intro-card">
+            <div class="small">A SAUDADE</div>
+            <h2 data-typewriter>A foto ficou borrada, mas a saudade ficou nítida.</h2>
+            <p>Tem imagem que não precisa estar perfeita para dizer tudo o que o coração ainda sente.</p>
+            <div class="visual" style="min-height:auto;">
+              <div class="image-wrap">
+                <img src="borradas.jpg" alt="Foto borrada" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="controls">
+          <span class="progress">06 / 06</span>
           <button class="btn" data-next>Ver surpresa</button>
         </div>
       </article>
 
-        <article class="slide" data-slide="5">
-          <div class="center-intro">
-            <div class="intro-card surprise">
-              <div class="small">EU AMO VOCE</div>
-              <div class="image-wrap" style="width:min(100%,420px); aspect-ratio: 4 / 5; margin: 4px auto 0;">
-                <img src="final.jpg" alt="Foto final do casal" />
-              </div>
+        <article class="slide" data-slide="6">
+        <div class="center-intro">
+          <div class="intro-card surprise">
+            <div class="small">EU AMO VOCE</div>
+            <p data-typewriter>Se um dia o tempo permitir, eu ainda vou querer te mostrar que o que foi bonito em nós nunca deixou de existir.</p>
+            <div class="image-wrap" style="width:min(100%,420px); aspect-ratio: 4 / 5; margin: 4px auto 0;">
+              <img src="final.jpg" alt="Foto final do casal" />
             </div>
           </div>
-        </article>
+        </div>
+      </article>
     </section>
   </main>
 
@@ -463,12 +585,38 @@
       }
     }
 
+    function animateTypewriter(slide) {
+      slide.querySelectorAll("[data-typewriter]").forEach((el) => {
+        const text = el.dataset.typewriterText || el.textContent.trim();
+        const speed = Number(el.dataset.typewriterSpeed || 28);
+        el.dataset.typewriterText = text;
+        el.textContent = "";
+        el.classList.add("typewriter-caret");
+
+        if (el._typewriterTimer) {
+          clearInterval(el._typewriterTimer);
+        }
+
+        let i = 0;
+        el._typewriterTimer = setInterval(() => {
+          el.textContent = text.slice(0, i);
+          i += 1;
+          if (i > text.length) {
+            clearInterval(el._typewriterTimer);
+            el._typewriterTimer = null;
+            el.textContent = text;
+          }
+        }, speed);
+      });
+    }
+
     function showSlide(index) {
       current = Math.max(0, Math.min(index, slides.length - 1));
       slides.forEach((slide, i) => slide.classList.toggle("active", i === current));
       window.scrollTo({ top: 0, behavior: "smooth" });
+      animateTypewriter(slides[current]);
 
-      if (current === 5) {
+      if (current === 6) {
         playLoveSong();
       } else {
         loveSong.pause();
@@ -479,6 +627,8 @@
     nextButtons.forEach(btn => {
       btn.addEventListener("click", () => showSlide(current + 1));
     });
+
+    animateTypewriter(slides[0]);
   </script>
   </body>
   </html>

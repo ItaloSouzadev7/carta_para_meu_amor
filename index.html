@@ -442,29 +442,44 @@
     <source src="amor-puro.mp3" type="audio/mpeg" />
   </audio>
 
-  <script>
-      const slides = Array.from(document.querySelectorAll(".slide"));
-      const nextButtons = document.querySelectorAll("[data-next]");
-      const loveSong = document.getElementById("loveSong");
-      const songStartSeconds = 96.68; // "Haverá um céu azul, um amor puro"
-      let current = 0;
+    <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const nextButtons = document.querySelectorAll("[data-next]");
+    const loveSong = document.getElementById("loveSong");
+    const songStartSeconds = 96;
+    let current = 0;
 
-      function showSlide(index) {
-        current = Math.max(0, Math.min(index, slides.length - 1));
-        slides.forEach((slide, i) => slide.classList.toggle("active", i === current));
-        window.scrollTo({ top: 0, behavior: "smooth" });
+    function playLoveSong() {
+      const start = () => {
+        loveSong.currentTime = songStartSeconds;
+        loveSong.play().catch(() => {});
+      };
 
-        if (current === 5) {
-          loveSong.currentTime = songStartSeconds;
-          loveSong.play().catch(() => {});
-        } else {
-          loveSong.pause();
-        }
+      loveSong.pause();
+      if (loveSong.readyState >= 1) {
+        start();
+      } else {
+        loveSong.addEventListener("loadedmetadata", start, { once: true });
       }
+    }
 
-      nextButtons.forEach(btn => {
-        btn.addEventListener("click", () => showSlide(current + 1));
-      });
-    </script>
+    function showSlide(index) {
+      current = Math.max(0, Math.min(index, slides.length - 1));
+      slides.forEach((slide, i) => slide.classList.toggle("active", i === current));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      if (current === 5) {
+        playLoveSong();
+      } else {
+        loveSong.pause();
+        loveSong.currentTime = 0;
+      }
+    }
+
+    nextButtons.forEach(btn => {
+      btn.addEventListener("click", () => showSlide(current + 1));
+    });
+  </script>
   </body>
   </html>
+
